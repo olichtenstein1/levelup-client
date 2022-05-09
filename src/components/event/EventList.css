@@ -1,0 +1,22 @@
+.button1 {
+    padding: 5px;
+}
+
+.events {
+    padding: 20px;
+}
+
+.itemDetails {
+    padding: 30px;
+    border: 5px solid green;
+    margin: 20px;
+}
+
+.buttonDetails {
+    padding-bottom: 20px;
+}
+
+.editDeleteButtons {
+    padding-top: 30px;
+}
+

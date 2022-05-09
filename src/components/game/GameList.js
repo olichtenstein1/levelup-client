@@ -1,0 +1,59 @@
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import { useHistory } from "react-router-dom"
+import { deleteGame, getGames, getGameTypes } from "./GameManager.js"
+
+
+
+export const GameList = (props) => {
+    const [games, setGames] = useState([])
+    const { gameId } = useParams()
+
+
+    useEffect(() => {
+        getGames().then(data => setGames(data))
+    }, [])
+
+
+    const history = useHistory()
+
+    const deleteThenUpdate = (gameId) => {
+        deleteGame(gameId)
+            .then(() => getGames())
+            .then((data) => setGames(data))
+    }
+
+    return (
+        <article className="games">
+            <button className="btn btn-2 btn-sep icon-create"
+                onClick={() => {
+                    history.push({ pathname: "/games/new" })
+                }}
+            >Register New Game</button>
+
+            {
+                games.map(game => {
+                    return <section key={`game--${game.id}`} className="game">
+                        <div className="game__title">{game.title} by {game.maker}</div>
+                        <div className="game__players">{game.number_of_players} players needed</div>
+                        <div className="game__skillLevel">Skill level is {game.skill_level}</div>
+                        <div className="game__gameType">Game Type is {game.game_type.label}</div>
+                        <button className="btn btn-2 btn-sep icon-create"
+                            onClick={() => {
+                                history.push({ pathname: `/games/edit/${game.id}` })
+                            }}
+                        // <Link to={`/games/${game.id}`}> Game </Link>
+                        >Edit/Update Game</button>
+
+                        <button className="btn btn-2 btn-sep icon-create"
+                            onClick={() => {
+                               deleteThenUpdate(game.id)
+                            }}
+                        // <Link to={`/games/${game.id}`}> Game </Link>
+                        >Delete Game</button>
+                    </section>
+                })
+            }
+        </article>
+    )
+}
